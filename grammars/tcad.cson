@@ -1,0 +1,169 @@
+'scopeName': 'source.tcad'
+'name': 'tcad'
+'fileTypes': ['.rsc', '.lst']
+
+patterns: [
+	{
+		include: '#comments'
+	}
+	{
+		include: '#numbers'
+	}
+	{
+		include: '#constants'
+	}
+	{
+		include: '#strings'
+	}
+	{
+		include: '#arrays'
+	}
+	{
+		include: '#misc'
+	}
+	{
+		include: '#keywords'
+	}
+	{
+		include: '#functions'
+	}
+	{
+		include: '#macros'
+	}
+	{
+		include: '#arguments'
+	}
+]
+
+repository:
+	comments:
+		patterns: [
+			{
+				begin: '//'
+				end: '\\n'
+				name: 'comment.line.double-slash.tcad'
+			}
+			{
+				begin: '/\\*'
+				beginCaptures:
+					'0':
+						name: 'punctuation.definition.comment.begin.tcad'
+				end: '\\*/'
+				endCaptures:
+					'0':
+						name: 'punctuation.definition.comment.end.tcad'
+				name: 'comment.block.tcad'
+			}
+		]
+
+	numbers:
+		patterns: [
+			{
+				match: '\\b(([0-9]+\\.?[0-9]*)|(\\.[0-9]+))((E|e)(\\+|-)?[0-9]+)?\\b'
+				name: 'constant.numeric.tcad'
+			}
+		]
+
+	constants:
+		patterns: [
+			{
+				match: '%(pi|e|i|eps|inf|nan|t|T|f|F|s|z)\\b'
+				name: 'support.constant.tcad'
+			}
+		]
+	arrays:
+		patterns: [
+			{
+				match: '[ \{ | \} | \\[ | \\] | \= | , | \+ | \. \( | \)]'
+				name: 'support.constant.tcad'
+			}
+		]
+	strings:
+		patterns: [
+			{
+				begin: '(?<![\\w\\]\)])\''
+				beginCaptures:
+					'0':
+						name: 'punctuation.definition.string.begin.tcad'
+				end: '\'(?!\')'
+				endCaptures:
+					'0':
+						name: 'punctuation.definition.string.end.tcad'
+				name: 'string.quoted.single.tcad'
+				patterns: [
+					{
+						match: '\'\'|""'
+						name: 'constant.character.escape.tcad'
+					}
+				]
+			}
+			{
+				begin: '"'
+				beginCaptures:
+					'0':
+						name: 'punctuation.definition.string.begin.tcad'
+				end: '"(?!")'
+				endCaptures:
+					'0':
+						name: 'punctuation.definition.string.end.tcad'
+				name: 'string.quoted.double.tcad'
+				patterns: [
+					{
+						match: '\'\'|""'
+						name: 'constant.character.escape.tcad'
+					}
+				]
+			}
+		]
+	keywords:
+		patterns: [
+			{
+				match: '\\b(dim|break|case|catch|clear|continue|do|else|elseif|end|endfunction|exit|for|if|pause|onerror|quit|return|select|then|try|while)\\b'
+				name: 'keyword.control.tcad'
+			}
+		]
+	macros:
+			patterns: [
+				{
+					match: '\\b([m|M]acro)\\s+(\\"[\\w+|\\s]*\\")'
+					captures:
+						'1':
+							 name: 'support.type.tcad'
+						'2':
+							name: 'support.type.tcad'
+					name: 'meta.macro.tcad'
+				}
+				{
+					match: '\\b([E|e]nd[m|M]acro)'
+					name: 'support.type.tcad'
+				}
+				{
+					match: '\\b([R|r]un[m|M]acro)'
+					name: 'support.type.tcad'
+				}
+			]
+	functions:
+		patterns: [
+			{
+				# 'GISDK built-in functions: A - List'
+ 			  match: '\\b(Abs|Acos|Acosh|AddAnnotation|AddArcGISLayer|AddArea|AddCDFLayer|AddExistingLayer|AddIDField|AddImageLayer|AddLayer|AddLayerToWorkspace|AddLegendItem|AddLink|AddLRSLayer|AddMatrixCore|AddMenuItem|AddMITABLayer|AddMITABLayerToWorkspace|AddNode|AddODBCLayer|AddODBCLayerToWorkspace|AddPoint|AddRecord|AddRecords|AddRoute|AddRouteStops|AddRouteSystemLayer|AddRSPhysicalStops|AddSDOLayer|AddSDOLayerToWorkspace|AddShapeLayer|AddShapeLayerToWorkspace|AddShortestPathRoutes|AggregateMatrix|AggregateTable|AppendRowToReportFile|AppendTableToReportFile|AppendToLogFile|AppendToLogFileWithLimit|AppendToReportFile|ApplyOverlayTable|AreMatricesCompatible|ArrangeIcons|ArrayElementToInteger|ArrayElementToReal|ArrayElementToString|ArrayExclude|ArrayLength|ArrayMax|ArrayMin|ArrayPosition|ArrayToVector|ArrayTranspose|As|Ascii|Asin|Asinh|Atan|Atan2|Atanh|AttachTableTranslation|Avg|Azimuth|BitwiseAnd|BitwiseNot|BitwiseOr|BitwiseXor|BringAnnotationToFront|BuildInternalIndex|CalculateVDFValues|CallDllFunction|CascadeWindows|Ceil|CenterLayout|CenterMap|ChangeLinkStatus|ChangeNetworkSettings|Char|CheckStopwatch|ChooseColor|ChooseDirectory|ChooseFile|ChooseFileName|ChooseFiles|ChooseFolder|ChooseFont|Circle|CleanMilepostView|ClearDXFInfo|ClearThemeValues|ClickAndDragLayout|ClickCircle|ClickCoord|ClickCurve|ClickDragAndShow|ClickEllipse|ClickEllipseScope|ClickLabel|ClickLayout|ClickLine|ClickPolyline|ClickRect|ClickRectScope|ClickScope|ClickShape|ClickText|CloseCOMControl|CloseDbox|CloseEditor|CloseFigure|CloseFile|CloseLayout|CloseMap|CloseReportFileSection|CloseView|ColorCIE|ColorHLS|ColorHSV|ColorRGB|ColumnAggregate|CombineMatrices|ComputeIntersectionPercentages|ComputeStatistics|ConcatenateFiles|ConcatMatrices|ConstructSnapshot|ConvertAutomaticToManualLabels|ConvertToAreaDatabase|ConvertToLineDatabase|ConvexHull|ConvoluteMatrices|Coord|CoordInArea|CoordInScope|CoordToLineDistance|CopyArray|CopyDatabase|CopyFigureToClipboard|CopyFile|CopyLayerSettings|CopyLayoutToClipboard|CopyMapToClipboard|CopyMapToOLE|CopyMatrix|CopyMatrixStructure|CopyPoint|CopyTableFiles|CopyToClipboard|CopyVector|Cos|Cosh|CreateBuffers|CreateChartTheme|CreateCOMControl|CreateCOMObject|CreateContinuousTheme|CreateContourDB|CreateConvexHullDB|CreateDatabase|CreateDesirelineDB|CreateDirectory|CreateDotTheme|CreateEditor|CreateEditorByQuery|CreateExpression|CreateFigure|CreateGeographyArchive|CreateGrid|CreateGroup|CreateGroupByTheme|CreateLayout|CreateLegend|CreateMap|CreateMatrix|CreateMatrixCurrencies|CreateMatrixCurrency|CreateMatrixEditor|CreateMatrixFromView|CreateMatrixIndex|CreateMilepostTable|CreateNetwork|CreateNodeField|CreateObject|CreateProgressBar|CreateRouteSystem|CreateRouteSystemFromTables|CreateSet|CreateShortcut|CreateSimpleMatrix|CreateSnapshot|CreateStopSkipButtons|CreateStopwatch|CreateStreetCDF|CreateTable|CreateTableFromMatrix|CreateTableFromTransitNetworkVars|CreateTheme|CreateTimer|CreateTransitNetwork|CreateTriangulation|CreateTriangulationAreaDB|CreateVisibilityMap|CreateVoronoiDB|CumulativeVector|DayOfWeek|DecideJoinType|DeleteArea|DeleteDatabase|DeleteFile|DeleteLink|DeleteMatrixIndex|DeleteNetworkInformationItem|DeleteNode|DeletePoint|DeleteRecord|DeleteRecordsInSet|DeleteRoute|DeleteRoutes|DeleteRouteStops|DeleteRouteSystem|DeleteSet|DeleteSnapshot|DeleteTableFiles|DestroyExpression|DestroyLegend|DestroyProgressBar|DestroyStopwatch|DestroyTheme|DestroyTimer|DetachTableTranslation|DisableItem|DisableMenuItems|DisableProgressBar|DivideMatrixElements|DragMapToOLE|DrawLayout|DrawMapAnnotations|DropAnnotation|DropAnnotations|DropLayer|DropLayerFromWorkspace|DropLegendItem|DropMatrixCore|DropSelectedAnnotations|DShortestPath|DuplicateAnnotation|DuplicateMap|EditorPrintSetup|EnableItem|EnableMenuItems|EnableProgressBar|EstimateElevation|EvaluateMatrixExpression|ExcludeArrayElements|Exit|Exp|ExpandGeographyArchive|ExportArcViewShape|ExportCSV|ExportDXF|ExportEditor|ExportExcel|ExportGeography|ExportMatrix|ExportTableTranslation|ExportView|ExtractArray|Factorial|FieldsSupportAggregations|FieldsSupportDescriptions|FigurePrintSetup|FileAtEOF|FileCheckUsage|FileGetPosition|FileReadDouble|FileReadFloat|FileReadLongInt|FileReadShortInt|FileReadString|FileSetPosition|FileWriteDouble|FileWriteFloat|FileWriteLongInt|FileWriteShortInt|FileWriteString|FillMatrix|FillStyle|FindOption|FindOptionValue|FindPhysicalStop|FindStrings|FitBezier|FlipMatrix|Floor|FlowChart|FlowChartEnd|FlowChartLink|FlowChartLinks|FlowChartNode|FlowChartNodes|FlowChartReverse|FlowChartStart|Format|GenerateBezier|GenerateDEMGrid|GeneratePalette|GetAbsoluteWindowSize|GetAnnotation|GetAnnotations|GetArcViewShapeInfo|GetArea|GetArrayScope|GetArrowheads|GetAVILength|GetBNAInfo|GetBorderColor|GetBorderStyle|GetBorderWidth|GetCentroid|GetClassMethodNames|GetClickControl|GetClickShift|GetClipboardData|GetColorCIE|GetColorHLS|GetColorHSV|GetColumnArray|GetCOMCollectionObjects|GetCOMControlObject|GetCOMInterfaceName|GetCOMObject|GetCompatibleMatrices|GetCoordsFromLinks|GetDataVector|GetDataVectors|GetDateAndTime|GetDBFiles|GetDBInfo|GetDBLayers|GetDBTopology|GetDefaultPrinter|GetDEMInfo|GetDEMNeighbor|GetDirection|GetDirectoryInfo|GetDiskSpace|GetDisplayedThemes|GetDisplayStatus|GetDistance|GetDLGInfo|GetDrives|GetDXFInfo|GetEdges|GetEditableFields|GetEditorFile|GetEditorHighlight|GetEditorOption|GetEditorSaveFlag|GetEditorType|GetEditorValues|GetEditorView|GetEndpoints|GetEnvironmentVariable|GetExpressionInfo|GetExpressions|GetField|GetFieldAggregations|GetFieldDecimals|GetFieldDescription|GetFieldFormat|GetFieldFullSpec|GetFieldInfo|GetFieldProtection|GetFields|GetFieldTableType|GetFieldTranslations|GetFieldType|GetFieldValues|GetFieldWidth|GetFigureFile|GetFigureSaveFlag|GetFigureType|GetFileInfo|GetFillColor|GetFillStyle|GetFillStyleDefinition|GetFillStyleTransparency|GetFirstRecord|GetFontInfo|GetFontNames|GetGIRASInfo|GetGPSInfo|GetGridCDFInfo|GetHardLinkClass|GetHatch|GetHiddenLabelDisplayStatus|GetIcon|GetIconColor|GetIconSize|GetIDField|GetImageFileInfo|GetInterface|GetInternalPoint|GetISFFInfo|GetItemSelection|GetLabelExpression|GetLabelOptions|GetLabelOverlapStatus|GetLabelOverride|GetLastError|GetLastRecord|GetLayer|GetLayerAutoscale|GetLayerDB|GetLayerDBPos|GetLayerInfo|GetLayerNames|GetLayerPosition|GetLayers|GetLayerScale|GetLayerScaleFlag|GetLayerScope|GetLayerSetsLabel|GetLayerType|GetLayerVisibility|GetLayout|GetLayoutFile|GetLayoutOptions|GetLayoutPages|GetLayoutPrinter|GetLayoutPrintSettings|GetLayoutPrintSize|GetLayoutResizeItems|GetLayoutSaveFlag|GetLayoutScale|GetLegend|GetLegendDisplayStatus|GetLegendOptions|GetLegendSettings|GetLine|GetLineColor|GetLineDistance|GetLineStyle|GetLineStyleDefinition|GetLineWidth|GetLinkLayer|GetLogFileName|GetLongPathName|GetLRSInfo|GetLRSLayers|GetManualLabelOptions|GetMap|GetMapBackground|GetMapCorners|GetMapCurrentLayer|GetMapDefaultScope|GetMapFile|GetMapLabelOptions|GetMapLayers|GetMapNames|GetMapNetworkFileName|GetMapOptions|GetMappableFieldIndices|GetMappableFields|GetMapProjection|GetMaps|GetMapSaveFlag|GetMapScope|GetMapTitle|GetMapUnitNames|GetMapUnits|GetMapWindowScope|GetMatrices|GetMatrix|GetMatrixBaseIndex|GetMatrixColumnLabels|GetMatrixCore|GetMatrixCoreNames|GetMatrixEditorColumnWidth|GetMatrixEditorCurrency|GetMatrixEditorFormat|GetMatrixEditorLabels|GetMatrixEditorSortOrder|GetMatrixFile|GetMatrixIndex|GetMatrixIndexIDs|GetMatrixIndexNames|GetMatrixInfo|GetMatrixMarginals|GetMatrixName|GetMatrixNames|GetMatrixReadOnly|GetMatrixRowLabels|GetMatrixValue|GetMatrixValues|GetMatrixVector|GetMenu|GetMenuItemText|GetMergedArea|GetMIFInfo|GetMinimumSpanningCircle|GetMITABInfo|GetMultiLine|GetNeighbors|GetNetworkDBName|GetNetworkInfo|GetNetworkInformation|GetNetworkInformationItem|GetNetworkInformationLabels|GetNetworkLinkType|GetNetworkLinkTypeName|GetNetworkNodeLinks|GetNextRecord|GetNodeFromLinks|GetNodeFromRoute|GetNodeLayer|GetNodeLinks|GetNodesFromLinks|GetNTFInfo|GetNTFVolume|GetObjectClass|GetObjectVariableNames|GetODBCDataSourceInfo|GetODBCDataSourceNames|GetODBCFields|GetODBCLayerInfo|GetODBCTables|GetOffset|GetOracleFields|GetOracleTables|GetPaperUnitNames|GetPaperUnits|GetPerimeter|GetPlatformVersion|GetPoint|GetPolygonArea|GetPolygonInternalPoint|GetPolygonPerimeter|GetPrevRecord|GetPrinters|GetPrintMargins|GetProgram|GetProjectionScope|GetReadOnly|GetReadOnlyFields|GetRecord|GetRecordCount|GetRecords|GetRecordScope|GetRecordsValues|GetRecordValues|GetReportFileName|GetRouteAttributes|GetRouteID|GetRouteIDs|GetRouteLinks|GetRouteMilepost|GetRouteNam|GetRouteNames|GetRouteSide|GetRouteStops|GetRouteSystemChanneling|GetRouteSystemFields|GetRouteSystemFiles|GetRouteSystemInfo|GetRouteSystemLayer|GetRowOrder|GetRSPhysicalStopsAttr|GetSample|GetScale|GetScopeCorners|GetScopeRect|GetScreenResolution|GetSDOInfo|GetSelectAutoRedraw|GetSelectDisplay|GetSelectedAnnotations|GetSelectedLabel|GetSelectInclusion|GetSetCount|GetSetIDs|GetSetPosition|GetSets|GetSetScale|GetSetScope|GetShortPathName|GetSnapshot|GetSnapshots|GetStopLocation|GetStopRouteName|GetStopsRouteNames|GetStreetLocation|GetSystemDirectory|GetSystemInfo|GetTableModifyFlag|GetTableStructure|GetTempFileName|GetTempPath|GetTheme|GetThemeClassCounts|GetThemeClasses|GetThemeClassLabels|GetThemeClassValues|GetThemeFillColors|GetThemeFillStyles|GetThemeIconColors|GetThemeIcons|GetThemeLineColors|GetThemeLineStyles|GetThemeLineWidths|GetThemeOptions|GetThemes|GetThemeSamples|GetThemeStatistics|GetTIFFDimensions|GetTool|GetUnitSize|GetVDFParameters|GetView|GetViewJoinInfo|GetViewLayer|GetViewNames|GetViewParents|GetViewReadOnly|GetViews|GetViewScope|GetViewStructure|GetViewTableInfo|GetWAVLength|GetWindowData|GetWindowName|GetWindowPosition|GetWindows|GetWindowSize|GetWindowType|GreatCircleMidpoint|Help|HideDbox|HideItem|HideLegend|HideMapLabels|HideTheme|IDToRecordHandle|ImportArcViewShape|ImportBNA|ImportBTS|ImportCSV|ImportDEM|ImportDLG|ImportDXF|ImportE00|ImportFromView|ImportGIRAS|ImportISFF|ImportMatrix|ImportMIF|ImportNTF|ImportTiger|In|InsertArrayElements|IntersectLines|IntToString|IRR|IsClockwise|IsFlowChart|IsImageRegisterable|IsKindOfClass|IsLayer|IsLayerExportable|IsMatrixSquare|IsMember|IsNeighbor|IsViewExportable|IsWindow|JoinLinks|JoinNodes|JoinStrings|JoinTableToLayer|JoinViews|JoinViewsMulti|Kurtosis|LaunchDocument|LaunchProgram|LayoutPrintSetup|LayoutProperties|Left|Len|LinearRegression|LineStyle|ListExcelSheets|ListTableFiles|LoadArray|LoadLibrary|LoadNetworkMovementTable|LoadResourceFile|LocateDBs|LocateNearestRecord|LocateNearestRecords|LocateRecord|Log|Log10|Lower|LPad|MapCoordToPixelXY|MapCoordToXY|MapPixelXYToCoord|MapPrintSetup|MapXYToCoord|MatrixCellbyCell|MatrixRMSE|MatrixStatistics|Max|MaximizeWindow|Mean|Median|MergeByValue|MergeGeography|MergeMatrixElements|MergeMilepostViews|MessageBox|Min|MinimizeWindow|MinimumSpanningCircle|Mod|ModifyRoute|ModifyRouteSystem|ModifyTable|MoveAlongGreatCircle|MoveAnnotation|MoveNode|MovePoint|MultiplyMatrix|MultiplyMatrixElements|NetworkEnableDisableLinkByConditions|NetworkEnableDisableLinkByExpression|NetworkForwardStar|NetworkGetTurnPenalty|NetworkLinkCosts|NetworkLinkID|NetworkLinkIDs|NetworkLinkLocate|NetworkLinks|NetworkLinkVarNames|NetworkMovementTableLoaded|NetworkNodeCosts|NetworkNodeID|NetworkNodeIDs|NetworkNodeLocate|NetworkNodes|NetworkNodeVarNames|NetworkPartitioning|NetworkVerifyExpression|NextDate|NextOccurrence|NullToZero|ObjectHasMethod|OneWayTable|OpenEditor|OpenEditorFromAnnotation|OpenFigure|OpenFigureFromAnnotation|OpenFile|OpenLayout|OpenMap|OpenMapFromAnnotation|OpenMatrix|OpenTable|OpenWorkspace|OptimizeDatabase|Out|Param|ParseShortcut|ParseString|PathCoords|PathDirections|Pause|Percentile|PlaySlideshow|PlaySound|Position|PositionFrom|PositionTo|Pow|PrintEditor|PrintFigure|PrintLayout|PrintMap|Proper|PushAnnotationToBack|PutInRecycleBin|RandomNumber|ReadArray|ReadLine|ReadNetwork|ReadSizedArray|RealToInt|RealToString|RecordHandleToID|RedrawEditor|RedrawMap|RegisterImage|ReloadRouteSystem|RemoveDirectory|RemoveMenuItem|RenameDatabase|RenameField|RenameFile|RenameLayer|RenameMatrix|RenameSet|RenameTableFiles|ResetCursor|ResetLogFile|ResetProgressWindow|ResetReportFile|ReshapeLink|RestoreWindow|Return|ReverseLink|Right|Round|RouteDirections|RPad|RubberSheet|RunDbox|RunProgram|SampleArea|SampleLine|SamplePoint|SampleText|SampleValues|SaveArray|SaveEditor|SaveEditorToBitmap|SaveEditorToImage|SaveEditorToJPEG|SaveFigure|SaveFigureToBitmap|SaveFigureToImage|SaveFigureToJPEG|SaveFigureToMetafile|SaveLayout|SaveLayoutToBitmap|SaveLayoutToImage|SaveLayoutToJPEG|SaveLayoutToMetafile|SaveLegendToImage|SaveMap|SaveMapToBitmap|SaveMapToImage|SaveMapToJPEG|SaveMapToMetafile|SaveWorkspace|Scope|ScopeInScope|ScopeIntersect|ScopeOnScope|ScopeUnion|SelectAll|SelectAllAnnotations|SelectAnnotation|SelectByCircle|SelectByCoord|SelectByIDFile|SelectByIDs|SelectByLinks|SelectByMapWindow|SelectByNodes|SelectByQuery|SelectByQueryFile|SelectByScope|SelectByShape|SelectByVicinity|SelectConnectedLinks|SelectFromNetwork|SelectNearestFeatures|SelectNone|SelectRecord|SelfAggregate|SendMail|SendProgramMessage|SendProgramRequest|SetAlternateInterface|SetAND|SetAnnotation|SetArrowheads|SetBorderColor|SetBorderStyle|SetBorderWidth|SetCheck|SetColumnArray|SetCOMControlTitle|SetCopy|SetCursor|SetDataVector|SetDataVectors|SetDefaultDisplay|SetDefaults|SetDisplayStatus|SetEditorHighlight|SetEditorOption|SetEditorOptionEx|SetEditorValues|SetEditorView|SetEnvironmentVariable|SetFieldDecimals|SetFieldFormat|SetFieldProtection|SetFieldWidth|SetFileAttributes|SetFillColor|SetFillStyle|SetFillStyleTransparency|SetHatch|SetHelpFile|SetHiddenLabelDisplayStatus|SetIcon|SetIconColor|SetIconSize|SetInvert|SetItem|SetItemSelection|SetLabelOptions|SetLabelOverlapStatus|SetLabelOverride|SetLabels|SetLayer|SetLayerPosition|SetLayerScale|SetLayerScaleFlag|SetLayerSetsLabel|SetLayerVisibility|SetLayoutOptions|SetLayoutPages|SetLayoutPrevious|SetLayoutPrinter|SetLayoutPrintSettings|SetLayoutResizeItems|SetLayoutScale|SetLegendDisplayStatus|SetLegendItemPosition|SetLegendOptions|SetLegendSettings|SetLineColor|SetLineStyle|SetLineWidth|SetLogFileName|SetLogMessageLimit|SetManualLabels|SetMap|SetMapBackground|SetMapDefaultScope|SetMapFile|SetMapLabelOptions|SetMapNetworkFileName|SetMapOptions|SetMapPrevious|SetMapProjection|SetMapRedraw|SetMapSaveFlag|SetMapScope|SetMapTitle|SetMapUnits|SetMatrix|SetMatrixCore|SetMatrixCoreName|SetMatrixCoreNames|SetMatrixEditorColumnWidth|SetMatrixEditorCurrency|SetMatrixEditorFormat|SetMatrixEditorLabels|SetMatrixEditorSortOrder|SetMatrixIndex|SetMatrixIndexName|SetMatrixIndexNames|SetMatrixValue|SetMatrixValues|SetMatrixVector|SetMenuItemText|SetMRUFiles|SetNetworkInformationItem|SetOffset|SetOR|SetPaperUnits|SetPrintMargins|SetProgressWindow|SetRandomSeed|SetRecord|SetRecordsValues|SetRecordValues|SetReferenceInfo|SetReportFileEncoding|SetReportFileName|SetRouteMilepost|SetRouteSystemChanneling|SetRowOrder|SetSampleText|SetScale|SetSearchPath|SetSelectAutoRedraw|SetSelectDisplay|SetSelectInclusion|SetSetPosition|SetSetScale|SetStatus|SetStatusBar|SetThemeClassLabel|SetThemeClassLabels|SetThemeFillColors|SetThemeFillStyles|SetThemeIconColors|SetThemeIcons|SetThemeLineColors|SetThemeLineStyles|SetThemeLineWidths|SetThemeOptions|SetTool|SetView|SetViewReadOnly|SetVisibleRectangle|SetWindow|SetWindowData|SetWindowPosition|SetWindowSize|SetWindowSizePixels|SetXOR|ShiftLeft|ShiftRight|ShortestPath|ShortestPathTree|ShortestTurnPath|ShortestTurnPathTree|ShortestXferPath|ShortestXferPathTree|ShowArray|ShowBitmap|ShowDbox|ShowItem|ShowLegend|ShowMessage|ShowSnapshot|ShowTheme|Sign|Sin|Sinh|Skew|Sleep|SnapStopsToRouteSystem|SnapStopToLinks|SnapStopToRoute|SortArray|SortSet|SortVector|SortVectors|SplitLink|SplitNode|SplitPath|SplitString|Sqrt|SqueezeDatabase|Standardize|StandardizeView|StartDebugger|StartGPS|Std|StopGPS|String|StringLength|StringToInt|StringToReal|Subarray|Substitute|Substring|Sum|TableHasTranslation|TagLayer|TagRouteStopsWithNode|Tan|Tanh|TestTheme|Throw|TigerVersion|TileWindows|TimeWindowTSP|TINElevations|TINScope|TransposeMatrix|Trim|TSP|TSPFromSet|TwoWayTable|TypeOf|UnRegisterImageFile|UnselectRecord|UpdateDbox|UpdateMatrixFromView|UpdateNetworkCost|UpdateProgressBar|Upper|Value|Var|Vector|VectorStatistic|VectorToArray|VerifyExpression|VerifyIndex|VerifyQuery|VerifyRouteSystem|WeightedMatrixSum|Word|WriteArray|WriteArraySeparated|WriteLine|WriteNetwork|ZeroToNull|ZoomAndCenterMap|ZoomLayout|ZoomMap)\\b'
+				name: 'keyword.control.tcad'
+			}
+		]
+
+
+	# arguments:
+	# 	patterns: [
+	# 		{
+	# 		  beign: '\('
+	# 			captures:
+	# 			 	'0':
+	# 			 		name: 'keyword.control.tcad'
+	# 			 end: '\)'
+	# 			 captures:
+	# 				'0':
+	# 					name: 'keyword.control.tcad'
+	# 			# match: '\\b(\(\\w+\))\\b'
+	# 			# name: 'keyword.control.tcad'
+	# 		}
+	# 	]

@@ -1,0 +1,17 @@
+{
+  "name": "atom-transcad",
+  "version": "0.0.0",
+  "description": "Transcad script support in Atom",
+  "engines": {
+    "atom": "*"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/4Step/atom-transcad.git"
+  },
+  "bugs": {
+    "url": "https://github.com/4Step/atom-transcad/issues"
+  },
+  "license": "MIT"
+}
